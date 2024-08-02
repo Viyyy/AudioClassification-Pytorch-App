@@ -1,0 +1,13 @@
+# 基础环境
+FROM hycx.ac.app.base:latest
+
+# 
+WORKDIR /code
+
+# 把文件复制到工作文件夹
+COPY ./code/. /code/
+
+COPY ./.env /code/.env
+
+# 启动
+CMD ["python","main.py"]

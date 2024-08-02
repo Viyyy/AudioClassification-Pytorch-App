@@ -1,0 +1,27 @@
+CAMPPlus:
+  "20240725":
+    label_list_path: "dataset/20240725"
+    configs_path: "configs/cam++.yml"
+    model_path: "models/20240725/CAMPPlus_Fbank/best_model"
+  "20240730":
+    label_list_path: "dataset/20240730"
+    configs_path: "configs/cam++.yml"
+    model_path: "models/20240730/CAMPPlus_Fbank/best_model"
+Res2Net:
+  "20240725":
+    label_list_path: "dataset/20240725"
+    configs_path: "configs/res2net.yml"
+    model_path: "models/20240725/Res2Net_Fbank/best_model"
+  "20240730":
+    label_list_path: "dataset/20240730"
+    configs_path: "configs/res2net.yml"
+    model_path: "models/20240730/Res2Net_Fbank/best_model"
+ResNetSE:
+  "20240725":
+    label_list_path: "dataset/20240725"
+    configs_path: "configs/resnet_se.yml"
+    model_path: "models/20240725/ResNetSE_Fbank/best_model"
+  "20240730":
+    label_list_path: "dataset/20240730"
+    configs_path: "configs/resnet_se.yml"
+    model_path: "models/20240730/ResNetSE_Fbank/best_model"

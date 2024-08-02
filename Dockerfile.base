@@ -1,0 +1,28 @@
+# 使用精简版本的python作为基础镜像，bullseye代表debian 11, 适合在生产环境中使用
+FROM python:3.10-slim-bullseye
+
+# 
+WORKDIR /code
+
+COPY ./requirements.txt /code/requirements.txt
+
+# 设置pip源
+# RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+# RUN pip config set global.extra-index-url "http://mirrors.aliyun.com/pypi/simple/ https://pypi.mirrors.ustc.edu.cn/simple/ http://pypi.hustunique.com/ http://pypi.douban.com/simple/ http://pypi.sdutlinux.org/"
+
+# 安装其他依赖
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# 设置镜像源为清华大学镜像源
+RUN sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
+    sed -i 's/security.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list
+
+# 安装ffmpeg
+RUN apt-get update && apt-get install -y ffmpeg && apt-get install -y nano
+
+# 设置时区
+RUN rm /etc/localtime
+RUN ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+# 复制中文字体文件到容器中
+COPY static/fonts/STSONG.TTF /usr/local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/
