@@ -2,6 +2,7 @@
 import os
 import json
 import torchaudio
+from typing import Literal
 
 from .common.colors import get_color_dict
 from .transfomers import get_melspec_transformer
@@ -115,35 +116,42 @@ class PredictDataController(BaseModel):
             "total": self.result_total,
         }
 
-    def draw_result_img(self, fontsize=10, thresold=RESULT_DATA_THRESHOLD):
+    def draw_result_img(self, fontsize=10, thresold=RESULT_DATA_THRESHOLD, ret:Literal['figure','ndarray']='ndarray'):
         if self.result is None:
             return None
 
         fig = draw_pie([self.result], self.color_dict, fontsize=fontsize, threshold=thresold)
 
-        img = plt2ndarray(fig, dpi=self.dpi)
+        if ret == 'figure':
+            return fig
+        elif ret == 'ndarray':
+            img = plt2ndarray(fig, dpi=self.dpi)
 
-        return img
+            return img
     
-    def draw_result_total_img(self, fontsize=12, thresold=RESULT_DATA_TOTAL_THRESHOLD):
+    def draw_result_total_img(self, fontsize=12, thresold=RESULT_DATA_TOTAL_THRESHOLD, ret:Literal['figure','ndarray']='ndarray'):
         if self.result_total is None:
             return None
         fig_total = draw_pie(
             [self.result_total], self.color_dict_total, fontsize=fontsize, threshold=thresold
         )
+        if ret == 'figure':
+            return fig_total
+        elif ret == 'ndarray':
+            img_total = plt2ndarray(fig_total, dpi=self.dpi)
+            return img_total
 
-        img_total = plt2ndarray(fig_total, dpi=self.dpi)
-
-        return img_total
-
-    def draw_spectrogram_img(self):
+    def draw_spectrogram_img(self, ret:Literal['figure','ndarray']='ndarray'):
         if self.signal is None:
             return None
         
         feature = self.mel_spec_transformer(self.signal[0])
         fig = plot_spectrogram(feature, title="Mel-Spectrogram")
-        img = plt2ndarray(fig, dpi=self.dpi)
-        return img
+        if ret == 'figure':
+            return fig
+        elif ret == 'ndarray':
+            img = plt2ndarray(fig, dpi=self.dpi)
+            return img
 
     def clear_result(self)->None:
         self.result = None
